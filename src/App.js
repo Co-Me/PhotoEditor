@@ -1,109 +1,9 @@
 import React from "react";
 import "./App.css";
+import {Slider} from "./Slider.js";
+import {SideMenu} from "./SideMenu.js";
+import {Image} from "./Image.js";
 
-class Image extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            image: props.image
-        };
-    }
-
-    render(){
-        return(
-            <div className="main-image">
-                <p>Image</p>
-            </div>
-        );
-    }
-}
-
-class Slider extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            min: props.min,
-            max: props.max,
-            value: props.value,
-            onChange: props.onChange,
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({ value: nextProps.value,
-                        min: nextProps.min,
-                        max: nextProps.max,
-                      });
-    }
-
-    render(){
-        return(
-            <div className="slider-container">
-                <input type="range" className="slider" min={this.state.min} max={this.state.max} value={this.state.value} onChange={this.state.onChange}/>
-            </div>
-        );
-    }
-}
-
-class SideMenu extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            activeIndex: props.activeIndex,
-            options: props.options,
-            onClick: props.onClick
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({ activeIndex: nextProps.activeIndex, options: nextProps.options});
-    }
-
-    render(){
-        return(
-            this.state.options.map((option, index) => {
-                return (
-                    <SideMenuItem
-                        key = {index}
-                        name={option.name}
-                        id = {index}
-                        active={this.state.activeIndex === index}
-                        onClick={this.state.onClick}
-                    />
-                )
-            })
-        );
-    }
-}
-
-class SideMenuItem extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            key: props.id,
-            name: props.name,
-            id: props.id,
-            active: props.active,
-            onClick: props.onClick
-        };
-    }
-
-        componentWillReceiveProps(nextProps) {
-        this.setState({ active: nextProps.active});
-    }
-
-    render(){
-        return(
-            <button id={this.state.id} className={this.state.active === true ? "side-menu-item-active" : "side-menu-item"} onClick={this.state.onClick}>
-                {this.state.name}
-            </button>
-        )
-    }
-}
 
 const DEFAULT_OPTIONS = [
   {
@@ -189,11 +89,23 @@ class ImageEditor extends React.Component {
         this.setState({ options: nextOptions });
     };
 
+     handleFileChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            this.setState({ image: event.target.result});
+        };
+
+        reader.readAsDataURL(file);
+  };
+
     render() {
         return (
             <div className="image-editor">
-                <div className="image">
-                    <Image />
+                <div className="loading"><input type="file" onChange={e => this.handleFileChange(e)} /></div>
+                <div className="main-image">
+                    <Image image={this.state.image} options={this.state.options} onChange={e => this.handleFileChange(e)}></Image>
                 </div>
                 <div className="side-menu">
                     <SideMenu
