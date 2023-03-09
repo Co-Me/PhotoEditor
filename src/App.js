@@ -1,5 +1,5 @@
 import React from "react";
-//import "./App.css";
+import "./App.css";
 
 class Image extends React.Component {
 
@@ -33,9 +33,29 @@ class Slider extends React.Component {
 }
 
 class SideMenu extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            activeIndex: props.activeIndex,
+            options: props.options,
+            onClick: props.onClick
+        };
+    }
     render(){
         return(
-            <div>SideMenu</div>
+            this.state.options.map((option, index) => {
+                return (
+                    <SideMenuItem
+                        name={option.name}
+                        key = {index}
+                        id = {index}
+                        active={this.state.activeIndex === index}
+                        onClick={e => this.state.onClick(e)}
+                    />
+                )
+            }
+            )
         );
     }
 }
@@ -45,14 +65,17 @@ class SideMenuItem extends React.Component {
         super(props);
 
         this.state = {
+            name: props.name,
+            key: props.id,
+            id: props.id,
             active: props.active,
-            onClick: props.onClick,
+            onClick: props.onClick
         };
     }
 
     render(){
         return(
-            <button className={this.state.active === true ? "side-menu-item-active" : "side-menu-item"} onclick={this.state.oncClick}>
+            <button className={this.state.active === true ? "side-menu-item-active" : "side-menu-item"} onClick={e => this.state.onClick(e)}>
                 {this.state.name}
             </button>
         )
@@ -139,11 +162,25 @@ class ImageEditor extends React.Component {
         this.state = {
             activeIndex: 0,
             options: DEFAULT_OPTIONS,
-            activeOption: 0,
         };
     }
-    handleSliderChange(value){
-        console.log(value);
+
+    handleSideMenuItemClick(event){
+        this.setState({activeIndex: event.target.id});
+        console.log(event.target);
+    }
+
+    handleSliderChange(event){
+        const nextOptions = this.state.options.map((c, i) => {
+            if (i === this.state.activeIndex)
+                c.value = event.target.value;
+            return c;
+        });
+        this.setState({
+            options: nextOptions
+        });
+
+        console.log(this.state.options[this.state.activeIndex].value);
     };
 
     render() {
@@ -153,10 +190,13 @@ class ImageEditor extends React.Component {
                     <Image />
                 </div>
                 <div className="side-menu">
-                    <SideMenu />
+                    <SideMenu activeIndex={this.state.activeIndex} options={this.state.options} onClick={e => this.handleSideMenuItemClick(e)}></SideMenu>
                 </div>
                 <div className="slider">
-                    <Slider min="0" max="100" value="30" onChange={e => this.handleSliderChange(e.target.value)}></Slider>
+                    <Slider min={this.state.options[this.state.activeIndex].range.min}
+                            max={this.state.options[this.state.activeIndex].range.max}
+                            value={this.state.options[this.state.activeIndex].value}
+                            onChange={e => this.handleSliderChange(e)}></Slider>
                 </div>
             </div>
         );
