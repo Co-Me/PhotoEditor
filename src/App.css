@@ -48,7 +48,7 @@ body {
   transition: background-color 400ms;
 }
 
-.side-menu-item:hover, .side-menu-item:focus {
+.side-menu-item:hover {
   background-color: #89ABCD;
 }
 
@@ -63,7 +63,7 @@ body {
   width: 80%;
   left: 10%;
   bottom: 0;
-  height: 2px;
+  height: 1px;
   background-color: indigo;
 }
 
