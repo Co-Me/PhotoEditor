@@ -22,11 +22,11 @@ body {
 
 .main-image {
   grid-area: image;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: 75vh;
   display: flex;
   justify-content: center;
-  max-height: 580px;
+
 }
 
 .side-menu {
