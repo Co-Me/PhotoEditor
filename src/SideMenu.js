@@ -11,9 +11,20 @@ class SideMenu extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ activeIndex: nextProps.activeIndex, options: nextProps.options});
+    /**
+   * Обновление состояние элемента при обновлении состояния в родительском элементе
+   *
+   * @param nextProps - свойства, переданные из родительского элемента
+   * @param prevState - предыдущее состояние
+   */
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.activeIndex !== prevState.activeIndex)
+            return ({
+                activeIndex: nextProps.activeIndex,
+                options: nextProps.options,
+            });
     }
+
 
     render(){
         return(
@@ -46,8 +57,17 @@ class SideMenuItem extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ active: nextProps.active});
+    /**
+   * Обновление состояние элемента при обновлении состояния в родительском элементе
+   *
+   * @param nextProps - свойства, переданные из родительского элемента
+   * @param prevState - предыдущее состояние
+   */
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.active !== prevState.active)
+            return ({
+                active: nextProps.active,
+            });
     }
 
     render(){

@@ -12,15 +12,22 @@ class Slider extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ value: nextProps.value,
-                        min: nextProps.min,
-                        max: nextProps.max,
-        });
-    }
-
-    renderImage(){
-
+    /**
+   * Обновление состояние элемента при обновлении состояния в родительском элементе
+   *
+   * @remarks
+   * Устанавливает значение id кликнутого элемента, как значение штвукса активного элемента (activeIndex)
+   *
+   * @param nextProps - свойства, переданные из родительского элемента
+   * @param prevState - предыдущее состояние
+   */
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.value !== prevState.value)
+            return ({
+                min: nextProps.min,
+                max: nextProps.max,
+                value: nextProps.value
+            });
     }
 
     render(){

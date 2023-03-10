@@ -75,11 +75,26 @@ class ImageEditor extends React.Component {
         };
     }
 
+    /**
+   * Обработка клика по SideMenuItem
+   *
+   * @remarks
+   * Устанавливает значение id кликнутого элемента, как значение штвукса активного элемента (activeIndex)
+   *
+   * @param event - событие клика по SideMenuItem
+   */
     handleSideMenuItemClick(event){
         this.setState({activeIndex: Number(event.target.id)});
-        console.log(this.state.activeIndex);
     }
 
+    /**
+   * Обработка изменения значения слайдера
+   *
+   * @remarks
+   * Изменяет значение слайдера в опциях активного элемента и вызываем функцию применения фильтра
+   *
+   * @param event - событие изменения значения слайдера
+   */
     handleSliderChange(event){
         let nextOptions = []
         for (let i = 0; i < this.state.options.length; i++) {
@@ -92,6 +107,14 @@ class ImageEditor extends React.Component {
         this.applyFilter();
     };
 
+    /**
+   * Обработка изменения файла в элементе input
+   *
+   * @remarks
+   * Устанавливает в контекст canvas загруженное изображение
+   *
+   * @param event - событие изменения файла в элементе input
+   */
     handleFileChange(event) {
         const newImage = new Image();
         newImage.src = URL.createObjectURL(event.target.files[0]);
@@ -105,6 +128,12 @@ class ImageEditor extends React.Component {
         };
     };
 
+    /**
+   * Применение фильтров
+   *
+   * @remarks
+   * Создает строку фильтра из опций, применяет фильтр к контексту изображения и отрисовывает его
+   */
     applyFilter(){
         const filters = this.state.options.map(option => {
             return `${option.property}(${option.value}${option.unit})`
@@ -116,7 +145,15 @@ class ImageEditor extends React.Component {
         context.drawImage(this.state.image, 0, 0);
     }
 
-    saveImage(){
+    /**
+   * Обработка нажатия кнопки сохранения изображения
+   *
+   * @remarks
+   *
+   *
+   * @param event - событие клика по SideMenuItem
+   */
+    handleSaveImageClick(){
         const canvas = this.state.canvas;
         const link = document.createElement('a');
         link.download = 'my-image.png';
@@ -129,7 +166,7 @@ class ImageEditor extends React.Component {
             <div className="image-editor">
                 <div className="loading">
                     <input type="file" id="file-input" onChange={e => this.handleFileChange(e)} />
-                    <button onClick={() => this.saveImage()}>Save image</button>
+                    <button onClick={() => this.handleSaveImageClick()}>Save image</button>
                 </div>
                 <div className="main-image">
                     <canvas id="canvas"/>
