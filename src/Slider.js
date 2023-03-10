@@ -19,6 +19,10 @@ class Slider extends React.Component {
         });
     }
 
+    renderImage(){
+
+    }
+
     render(){
         return(
             <div className="slider-container">

@@ -18,6 +18,7 @@ class SideMenu extends React.Component {
     render(){
         return(
             this.state.options.map((option, index) => {
+                console.log(index, this.state.activeIndex);
                 return (
                     <SideMenuItem
                         key = {index}
@@ -45,7 +46,7 @@ class SideMenuItem extends React.Component {
         };
     }
 
-        componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         this.setState({ active: nextProps.active});
     }
 

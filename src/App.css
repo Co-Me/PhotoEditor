@@ -54,6 +54,7 @@ body {
 
 .side-menu-item-active {
   background-color: #89ABCD;
+  padding: 1rem;
 }
 
 .side-menu-item::after {
